@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EcoTroca - Login</title>
+    <title>EcoTroca - Plataforma de Trocas</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        /* Estilos gerais */
         * {
             margin: 0;
             padding: 0;
@@ -15,48 +16,36 @@
         }
 
         body {
-            background: linear-gradient(135deg, #2ecc71, #27ae60);
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background: #f0f2f5;
+            min-height: 100vh;
         }
 
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Estilos do Login */
         .login-container {
             background: white;
             width: 90%;
-            max-width: 800px;
-            border-radius: 20px;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            overflow: hidden;
-        }
-
-        .login-image {
-            background: url('https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
-            background-size: cover;
-            background-position: center;
-        }
-
-        .login-form {
+            max-width: 400px;
             padding: 40px;
-            position: relative;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin: 50px auto;
         }
 
         .login-header {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
         }
 
         .login-header h1 {
             color: #2ecc71;
-            font-size: 2rem;
+            font-size: 1.8rem;
             margin-bottom: 10px;
-        }
-
-        .login-header p {
-            color: #666;
         }
 
         .input-group {
@@ -78,36 +67,17 @@
             border: 2px solid #eee;
             border-radius: 8px;
             font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .input-group input:focus {
-            border-color: #2ecc71;
-            outline: none;
         }
 
         .options {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-        }
-
-        .remember-me {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: #666;
+            margin: 15px 0;
+            text-align: center;
         }
 
         .forgot-password {
             color: #2ecc71;
             text-decoration: none;
             font-size: 0.9rem;
-        }
-
-        .forgot-password:hover {
-            text-decoration: underline;
         }
 
         .login-button {
@@ -117,78 +87,202 @@
             color: white;
             border: none;
             border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
             cursor: pointer;
-            transition: background 0.3s;
+            margin-top: 10px;
         }
 
-        .login-button:hover {
-            background: #27ae60;
+        /* Dashboard */
+        .dashboard {
+            display: none;
         }
 
-        .signup-link {
-            text-align: center;
-            margin-top: 25px;
-            color: #666;
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
         }
 
-        .signup-link a {
-            color: #2ecc71;
-            text-decoration: none;
+        .user-list {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
         }
 
-        @media (max-width: 768px) {
-            .login-container {
-                grid-template-columns: 1fr;
-            }
-            
-            .login-image {
-                display: none;
-            }
+        .user-card {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+        }
+
+        .user-card:hover {
+            background: #f8f9fa;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #2ecc71;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin-right: 15px;
+        }
+
+        /* Chat */
+        .chat-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 350px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            display: none;
+            z-index: 1000;
+        }
+
+        .chat-header {
+            background: #2ecc71;
+            color: white;
+            padding: 15px;
+            border-radius: 15px 15px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-messages {
+            height: 300px;
+            overflow-y: auto;
+            padding: 15px;
+            background: #f8f9fa;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .message-content {
+            max-width: 80%;
+            padding: 10px 15px;
+            border-radius: 10px;
+            background: white;
+        }
+
+        .received .message-content {
+            background: #e9ecef;
+        }
+
+        .sent {
+            flex-direction: row-reverse;
+        }
+
+        .sent .message-content {
+            background: #2ecc71;
+            color: white;
+        }
+
+        .chat-input {
+            display: flex;
+            padding: 15px;
+            gap: 10px;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        /* Outros elementos */
+        .logout-btn {
+            background: #e74c3c;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <div class="login-image"></div>
-        
-        <div class="login-form">
-            <div class="login-header">
-                <h1>Bem-vindo à EcoTroca</h1>
-                <p>Faça login para começar suas trocas</p>
-            </div>
+    <!-- Página de Login -->
+    <div class="login-container" id="loginContainer">
+        <div class="login-header">
+            <h1>EcoTroca</h1>
+            <p>Conecte-se para começar</p>
+        </div>
 
-            <form id="loginForm" onsubmit="event.preventDefault(); login()">
-                <div class="input-group">
-                    <i class="fas fa-user"></i>
-                    <input type="text" id="username" placeholder="Nome de usuário" required>
-                </div>
+        <div class="input-group">
+            <i class="fas fa-user"></i>
+            <input type="text" id="username" placeholder="Nome de usuário">
+        </div>
 
-                <div class="input-group">
-                    <i class="fas fa-lock"></i>
-                    <input type="password" id="password" placeholder="Senha" required>
-                </div>
+        <div class="input-group">
+            <i class="fas fa-lock"></i>
+            <input type="password" id="password" placeholder="Senha">
+        </div>
 
-                <div class="options">
-                    <label class="remember-me">
-                        <input type="checkbox"> Lembrar-me
-                    </label>
-                    <a href="#" class="forgot-password" onclick="showForgotPassword()">Esqueci a senha</a>
-                </div>
+        <div class="options">
+            <a href="#" class="forgot-password" onclick="showForgotPassword()">Esqueci a senha</a>
+        </div>
 
-                <button type="submit" class="login-button">Entrar</button>
-            </form>
+        <button class="login-button" onclick="login()">Entrar</button>
+    </div>
 
-            <div class="signup-link">
-                Não tem uma conta? <a href="#" onclick="showSignup()">Cadastre-se</a>
-            </div>
+    <!-- Dashboard -->
+    <div class="dashboard" id="dashboard">
+        <div class="header">
+            <h2>Usuários Disponíveis</h2>
+            <button class="logout-btn" onclick="logout()">Sair</button>
+        </div>
+
+        <div class="user-list" id="userList">
+            <!-- Usuários serão carregados via JavaScript -->
+        </div>
+    </div>
+
+    <!-- Chat -->
+    <div class="chat-container" id="chatContainer">
+        <div class="chat-header">
+            <h3 id="chatPartner">Chat</h3>
+            <button class="logout-btn" onclick="closeChat()">✕</button>
+        </div>
+        <div class="chat-messages" id="chatMessages"></div>
+        <div class="chat-input">
+            <input type="text" id="messageInput" placeholder="Digite sua mensagem...">
+            <button class="login-button" onclick="sendMessage()">Enviar</button>
         </div>
     </div>
 
     <script>
         // Simulação de banco de dados
         let users = JSON.parse(localStorage.getItem('users')) || [];
+        let messages = JSON.parse(localStorage.getItem('messages')) || [];
+        let currentUser = null;
+        let currentChatPartner = null;
+
+        // Usuários de exemplo
+        if(users.length === 0) {
+            users = [
+                { username: 'Maria', password: '123' },
+                { username: 'João', password: '123' },
+                { username: 'Ana', password: '123' }
+            ];
+            localStorage.setItem('users', JSON.stringify(users));
+        }
 
         function login() {
             const username = document.getElementById('username').value;
@@ -196,30 +290,107 @@
 
             const user = users.find(u => u.username === username);
             
-            if(user) {
-                if(user.password === password) {
-                    window.location.href = 'dashboard.html';
-                } else {
-                    alert('Senha incorreta!');
-                }
+            if(user && user.password === password) {
+                currentUser = user;
+                showDashboard();
+                loadUsers();
             } else {
-                alert('Usuário não encontrado!');
+                alert('Credenciais inválidas!');
             }
+        }
+
+        function showDashboard() {
+            document.getElementById('loginContainer').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+        }
+
+        function logout() {
+            currentUser = null;
+            location.reload();
+        }
+
+        function loadUsers() {
+            const userList = document.getElementById('userList');
+            userList.innerHTML = users
+                .filter(u => u.username !== currentUser.username)
+                .map(user => `
+                    <div class="user-card" onclick="openChat('${user.username}')">
+                        <div class="user-avatar">${user.username[0]}</div>
+                        <div>
+                            <h3>${user.username}</h3>
+                            <p>Disponível para trocas</p>
+                        </div>
+                    </div>
+                `).join('');
+        }
+
+        function openChat(partner) {
+            currentChatPartner = partner;
+            document.getElementById('chatContainer').style.display = 'block';
+            document.getElementById('chatPartner').textContent = partner;
+            loadMessages();
+        }
+
+        function closeChat() {
+            document.getElementById('chatContainer').style.display = 'none';
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            
+            if(message) {
+                const newMessage = {
+                    from: currentUser.username,
+                    to: currentChatPartner,
+                    text: message,
+                    time: new Date().toLocaleTimeString()
+                };
+
+                messages.push(newMessage);
+                localStorage.setItem('messages', JSON.stringify(messages));
+                
+                displayMessage(newMessage);
+                input.value = '';
+            }
+        }
+
+        function loadMessages() {
+            const chatMessages = document.getElementById('chatMessages');
+            chatMessages.innerHTML = messages
+                .filter(msg => 
+                    (msg.from === currentUser.username && msg.to === currentChatPartner) ||
+                    (msg.from === currentChatPartner && msg.to === currentUser.username)
+                )
+                .map(msg => `
+                    <div class="message ${msg.from === currentUser.username ? 'sent' : 'received'}">
+                        <div class="message-content">
+                            <p>${msg.text}</p>
+                            <small>${msg.time}</small>
+                        </div>
+                    </div>
+                `).join('');
+        }
+
+        function displayMessage(msg) {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${msg.from === currentUser.username ? 'sent' : 'received'}`;
+            messageDiv.innerHTML = `
+                <div class="message-content">
+                    <p>${msg.text}</p>
+                    <small>${msg.time}</small>
+                </div>
+            `;
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
         }
 
         function showForgotPassword() {
             const email = prompt('Digite seu e-mail para redefinir a senha:');
             if(email) {
-                // Simulação de envio de e-mail
-                setTimeout(() => {
-                    alert(`Instruções de redefinição enviadas para ${email}`);
-                }, 1000);
+                alert(`Instruções enviadas para ${email} (simulação)`);
             }
-        }
-
-        function showSignup() {
-            // Redirecionar para página de cadastro
-            alert('Redirecionando para página de cadastro...');
         }
     </script>
 </body>
