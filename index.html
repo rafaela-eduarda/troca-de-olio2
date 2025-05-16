@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoTroca - Chat de Negociações</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #f0f2f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Chat Moderno */
+        .chat-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 400px;
+            height: 70vh;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .chat-container.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            color: white;
+            padding: 20px;
+            border-radius: 20px 20px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-header h3 {
+            font-weight: 600;
+        }
+
+        .close-chat {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: #f8f9fa;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: start;
+            gap: 10px;
+        }
+
+        .message.self {
+            flex-direction: row-reverse;
+        }
+
+        .avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: #2ecc71;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .message-content {
+            max-width: 70%;
+            padding: 12px 15px;
+            border-radius: 15px;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .message.self .message-content {
+            background: #2ecc71;
+            color: white;
+        }
+
+        .message-time {
+            font-size: 0.75rem;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .chat-input {
+            padding: 15px;
+            border-top: 1px solid #eee;
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            outline: none;
+        }
+
+        .chat-input button {
+            background: #2ecc71;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .chat-input button:hover {
+            background: #27ae60;
+        }
+
+        /* Botão Flutuante do Chat */
+        .chat-toggle {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #2ecc71;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(46,204,113,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <button class="chat-toggle" onclick="toggleChat()">💬</button>
+
+    <div class="chat-container" id="chatContainer">
+        <div class="chat-header">
+            <h3>Chat de Negociações</h3>
+            <button class="close-chat" onclick="toggleChat()">×</button>
+        </div>
+        
+        <div class="chat-messages" id="chatMessages">
+            <!-- Mensagens anteriores -->
+            <div class="message">
+                <div class="avatar">U1</div>
+                <div class="message-content">
+                    <p>Olá! Tenho 5L de óleo para trocar</p>
+                    <div class="message-time">10:30 AM</div>
+                </div>
+            </div>
+            
+            <div class="message self">
+                <div class="avatar">EU</div>
+                <div class="message-content">
+                    <p>Ótimo! Posso oferecer 10 barras de sabão</p>
+                    <div class="message-time">10:31 AM</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chat-input">
+            <input type="text" id="messageInput" placeholder="Digite sua mensagem...">
+            <button onclick="sendMessage()">Enviar</button>
+        </div>
+    </div>
+
+    <script>
+        let chatOpen = false;
+        const chatContainer = document.getElementById('chatContainer');
+        
+        function toggleChat() {
+            chatOpen = !chatOpen;
+            chatContainer.classList.toggle('active', chatOpen);
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            const chatMessages = document.getElementById('chatMessages');
+            
+            if(message) {
+                // Mensagem do usuário atual
+                const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                
+                const messageElement = `
+                    <div class="message self">
+                        <div class="avatar">EU</div>
+                        <div class="message-content">
+                            <p>${message}</p>
+                            <div class="message-time">${time}</div>
+                        </div>
+                    </div>
+                `;
+                
+                chatMessages.insertAdjacentHTML('beforeend', messageElement);
+                input.value = '';
+                
+                // Simular resposta após 1 segundo
+                setTimeout(() => {
+                    const replyElement = `
+                        <div class="message">
+                            <div class="avatar">U2</div>
+                            <div class="message-content">
+                                <p>Vamos combinar a troca!</p>
+                                <div class="message-time">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+                            </div>
+                        </div>
+                    `;
+                    chatMessages.insertAdjacentHTML('beforeend', replyElement);
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                }, 1000);
+
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+        }
+
+        // Iniciar chat fechado
+        toggleChat();
+    </script>
+</body>
+</html>
